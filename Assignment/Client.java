@@ -26,9 +26,6 @@
  */
 
 
-package Assignment;
-
-
 interface IViewer{
     void view();
 }
@@ -60,43 +57,114 @@ class MicrosoftEdgeViewer implements IViewer
         System.out.println("Viewing with Microsoft Edge viewer");
     }
 }
+/**
+ * This Product class structure is more different than the other Product classes.
+ * So, we need a adapter a class to make it compitable with existing client interface  
+ */
+class DOCXViewer 
+{
 
-
-class FileFactory{
-    static FileFactory obj=null;
-    private FileFactory(){}
-
-    public static FileFactory getInstatnce()
-    {
-        if(obj==null)
-        {
-            obj=new FileFactory();
-        }
-
-        return obj;
+    public void ViewPages()
+    {   
+        System.out.println("Viewing with DOCX viewer");
     }
-    public IViewer getViewer(String ViewerType)
+}
+class DOCXAdapterViewer implements IViewer
+{
+    DOCXViewer docxViewer;
+    DOCXAdapterViewer(DOCXViewer docxViewer)
     {
-            IViewer viewer=null;
-            if(ViewerType.equals("wps"))
-            {
-                viewer=new WPSviewer();
-            }
-            else if(ViewerType.equals("adobe"))
-            {
-                viewer=new AdobeViewer();
-            }
-            
-            return viewer;
-
+        this.docxViewer = docxViewer;
+    }
+    @Override
+    public void view()
+    {   
+        docxViewer.ViewPages();
     }
 
 }
 
+abstract class FileFactory{
+    
+    IViewer getViewer(String ViewerType)
+    {
+        IViewer viewer;
+        viewer =createViewer(ViewerType);
+        return viewer;
+    }
+    // createViewer() = Factory method--> It produces products
+    abstract IViewer createViewer(String ViewerType);
+    
+
+}
+/**
+ * If we add a new subclass of Factory class ,then the subclass will take the responsibility
+ * of the concrete object/products creation.
+ * 
+ * NewFileFactory= Concrete Creators(A class that produces proudcts)
+ * Product classes= "MicrosoftEdgeViewer","WPSviewer","WPSviewer" 
+ */
+class NewFileFactory extends FileFactory{
+
+    
+
+    IViewer createViewer(String ViewerType)
+    {
+        IViewer viewer=null;
+        if(ViewerType.equals("wps"))
+        {
+            viewer=new WPSviewer();
+        }
+        else if(ViewerType.equals("adobe"))
+        {
+            viewer=new AdobeViewer();
+        }
+        else if(ViewerType.equals("microsoft_edge"))
+        {
+            viewer=new MicrosoftEdgeViewer();
+        }
+        
+        return viewer;
+    }
+
+
+}
+class NewFileFactory2 extends NewFileFactory{
+
+    IViewer createViewer(String ViewerType)
+    {
+        IViewer viewer=null;
+        if(ViewerType.equals("wps"))
+        {
+            viewer=new WPSviewer();
+        }
+        else if(ViewerType.equals("adobe"))
+        {
+            viewer=new AdobeViewer();
+        }
+        else if(ViewerType.equals("microsoft_edge"))
+        {
+            viewer=new MicrosoftEdgeViewer();
+        }
+        else if(ViewerType.equals("DOCX"))
+        {
+           
+            viewer=new DOCXAdapterViewer(new DOCXViewer());
+        }
+        
+        return viewer;
+    }
+
+
+}
 public class Client{
     public static void main(String str[])
     {
-        FileFactory.getInstatnce().getViewer("wps").view();
+        FileFactory ff=new NewFileFactory();
+        ff.getViewer("microsoft_edge").view();
+        FileFactory ff2=new NewFileFactory2();
+        ff2.getViewer("DOCX").view();
+
 
     }
 }
