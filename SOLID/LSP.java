@@ -48,12 +48,21 @@ class Square extends Rectangle
 public class LSP {
     public static void main(String[] args)
     {
-        Rectangle r= new Square();
-        r.setWidth(5);
-        r.setHeight(10);
-        System.out.println(r.getArea());
-
+        Rectangle r= new Rectangle();
+        //Rectangle r= new Square();
+        r.setWidth(5);//---> 5x5=25
+        r.setHeight(10);//--> 10x10=100
         
+        System.out.println(r.getArea());
+        
+        /**
+         * output: 50 (if new Rectangle())
+         * output: 100 (if new Square())
+         * So, after substituting with the child object ,the results are not same.So, it is against the principle 
+         * of LSP.
+         * 
+         */
+
 
     }
 }
