@@ -1,3 +1,4 @@
+
 interface Reader {
     public String read();
 }
@@ -23,6 +24,8 @@ class CSVReader implements Reader
             return "CSV file reading";
     }
 }
+
+/*
 class HttpClient
 {
 
@@ -48,26 +51,47 @@ class HttpClient
         }
     }
 }
+*/
 
 /**
- * 
+ * Good Practise:
  * 
  */
-class ReaderFactory {
+abstract class ReaderFactory {
 
-    public static Reader getReader(String readerType)
+    public  Reader getReader(String readerType)
     {
             Reader reader = null;
-            if (readerType.equalsIgnoreCase("XML")) {
-                reader = new XMLReader();
-            }
-            else if (readerType.equalsIgnoreCase("CSV")) {
-                reader = new CSVReader();
-            }
-            else if (readerType.equalsIgnoreCase("DB")) {
-                reader = new DataBaseReader();
-            }
+            reader=createReader(readerType);
             return reader;
+    }
+    abstract Reader createReader(String readerType);
+
+}
+class ModifiedReaderFactory extends ReaderFactory
+{
+    Reader createReader(String readerType)
+    {
+        Reader reader = null;
+        if (readerType.equalsIgnoreCase("XML")) {
+            reader = new XMLReader();
+        }
+        else if (readerType.equalsIgnoreCase("CSV")) {
+            reader = new CSVReader();
+        }
+        else if (readerType.equalsIgnoreCase("DB")) {
+            reader = new DataBaseReader();
+        }
+        return reader;
+    }
+}
+
+class HttpClient
+{
+    public static void main(String[] args)
+    {
+        Reader reader=new ModifiedReaderFactory().getReader("XML");
+        System.out.println(reader.read());
     }
 
 }
