@@ -1,114 +1,75 @@
+import java.util.ArrayList;
+import java.util.List;
 
+class Employee {
+   private String name;
+   private String dept;
+   private int salary;
+   private List<Employee> subordinates;
 
-// A Java program to demonstrate working of 
-// Composite Design Pattern with example  
-// of a company with different 
-//  employee details 
-  
-import java.util.ArrayList; 
-import java.util.List; 
-  
-// A common interface for all employee 
-interface Employee 
-{ 
-    public void showEmployeeDetails(); 
-}  
-class Developer implements Employee 
-{ 
-    private String name; 
-    private long empId; 
-    private String position; 
-    private int salary;
-    public Developer(long empId, String name, String position, int salary) 
-    { 
-        // Assign the Employee id, 
-        // name and the position 
-        this.empId = empId; 
-        this.name = name; 
-        this.position = position; 
-        this.salary=salary;
-    } 
-      
-    @Override
-    public void showEmployeeDetails()  
-    { 
-        System.out.println(empId+" " +name+ " " + position+" "+salary ); 
-    }  
-} 
-  
-class Manager implements Employee 
-{ 
-    private String name; 
-    private long empId; 
-    private String position; 
-    private int salary;
+   // constructor
+   public Employee(String name,String dept, int sal) {
+      this.name = name;
+      this.dept = dept;
+      this.salary = sal;
+      subordinates = new ArrayList<Employee>();
+   }
 
-    public Manager(long empId, String name, String position,int salary) 
-    { 
-        this.empId = empId; 
-        this.name = name; 
-        this.position = position; 
-        this.salary=salary;
-    } 
+   public void add(Employee e) {
+      subordinates.add(e);
+   }
+
+   public void remove(Employee e) {
+      subordinates.remove(e);
+   }
+
+   public List<Employee> getSubordinates(){
+     return subordinates;
+   }
+
+   public String toString(){
+      return ("Employee :[ Name : " + name + ", dept : " + dept + ", salary :" + salary+" ]");
+   }   
+}
+
+public class Company {
+    public static void main(String[] args) {
+    
+       Employee BOSS = new Employee("Sajid","Boss", 30000);
+ 
+       Employee dev1 = new Employee("Rain","Developer-1", 20000);
+ 
+       Employee manager1 = new Employee("Jabed","Manager-1", 20000);
+ 
+       Employee dev2 = new Employee("Sachi","Developer-2", 10000);
+       Employee manager2 = new Employee("Nishan","Manager-2", 10000);
+ 
+       Employee dev3 = new Employee("Shourav","Developer-3", 10000);
+       Employee dev4 = new Employee("Saif","Developer-4", 10000);
+ 
+       BOSS.add(dev1);
+       BOSS.add(manager1);
+ 
+       manager1.add(manager2);
+       manager1.add(dev2);
+ 
+       manager2.add(dev3);
+       manager2.add(dev4);
+ 
+       //print all employees of the organization
+       System.out.println(BOSS); 
        
-    @Override
-    public void showEmployeeDetails()  
-    { 
-        System.out.println(empId+" " +name+ " " + position+" "+salary ); 
-    } 
-} 
-  
-  
-// Class used to get Employee List 
-// and do the opertions like  
-// add or remove Employee 
-  
-class CompanyDirectory implements Employee 
-{ 
-    private List<Employee> employeeList = new ArrayList<Employee>(); 
-        
-    @Override
-    public void showEmployeeDetails()  
-    { 
-        for(Employee emp:employeeList) 
-        { 
-            emp.showEmployeeDetails(); 
-        } 
-    } 
-        
-    public void addEmployee(Employee emp) 
-    { 
-        employeeList.add(emp); 
-    } 
-        
-    public void removeEmployee(Employee emp) 
-    { 
-        employeeList.remove(emp); 
-    } 
-} 
-  
-// Driver class 
-public class Company 
-{ 
-    public static void main (String[] args) 
-    { 
-        Developer dev1 = new Developer(100, "Lokesh Sharma", "Pro Developer",5000); 
-        Developer dev2 = new Developer(101, "Vinay Sharma", "Developer",6000); 
-        
-        CompanyDirectory engDirectory = new CompanyDirectory(); 
-        engDirectory.addEmployee(dev1); 
-        engDirectory.addEmployee(dev2); 
-           
-        Manager man1 = new Manager(200, "Kushagra Garg", "SEO Manager",10000); 
-        Manager man2 = new Manager(201, "Vikram Sharma ", "Kushagra's Manager",12000); 
-           
-        CompanyDirectory accDirectory = new CompanyDirectory(); 
-        accDirectory.addEmployee(man1); 
-        accDirectory.addEmployee(man2); 
+       for (Employee Employee : BOSS.getSubordinates())
+       {
+            System.out.println(Employee);
+          
+            for (Employee employee : Employee.getSubordinates()) 
+            {
+                System.out.println(employee);
+            }
+       }
        
-        CompanyDirectory directory = new CompanyDirectory(); 
-        directory.addEmployee(engDirectory); 
-        directory.addEmployee(accDirectory); 
-        directory.showEmployeeDetails(); 
-    } 
-} 
+       
+
+    }
+ }
