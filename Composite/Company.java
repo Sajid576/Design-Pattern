@@ -6,7 +6,8 @@ interface EmployeeComponent
    public void add(EmployeeComponent e);
    public void remove(EmployeeComponent e) ;
    public List<EmployeeComponent> getSubordinates();
-
+   public void setParent(EmployeeComponent p);
+   public String getName();
 }
 
 class Employee implements EmployeeComponent{
@@ -26,7 +27,7 @@ class Employee implements EmployeeComponent{
 
    public void add(EmployeeComponent e) {
       subordinates.add(e);
-      ((Employee) e).setParent(this);
+      e.setParent(this);
       //System.out.println(this.getName()); 
    }
 
@@ -51,7 +52,7 @@ class Employee implements EmployeeComponent{
       {
           return ("Employee :[ Name : " + name + ", dept : " + dept + ", salary :" + salary+" ]");
       }
-      return ("Employee :[Under: "+((Employee)parent).getName().toString()+", Name : " + name + ", dept : " + dept + ", salary :" + salary+" ]");
+      return ("Employee :[Under: "+parent.getName().toString()+", Name : " + name + ", dept : " + dept + ", salary :" + salary+" ]");
    }   
 }
 
