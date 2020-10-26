@@ -1,35 +1,47 @@
 import java.util.ArrayList;
 import java.util.List;
 
-class Employee {
+interface EmployeeComponent
+{
+   public void add(EmployeeComponent e);
+   public void remove(EmployeeComponent e) ;
+   public List<EmployeeComponent> getSubordinates();
+
+}
+
+class Employee implements EmployeeComponent{
    private String name;
    private String dept;
    private int salary;
-   private List<Employee> subordinates;
-   private Employee parent;
+   private List<EmployeeComponent> subordinates;
+   private EmployeeComponent parent;
 
    // constructor
    public Employee(String name,String dept, int sal) {
       this.name = name;
       this.dept = dept;
       this.salary = sal;
-      subordinates = new ArrayList<Employee>();
+      subordinates = new ArrayList<EmployeeComponent>();
    }
 
-   public void add(Employee e) {
+   public void add(EmployeeComponent e) {
       subordinates.add(e);
-      e.parent=this;
+      ((Employee) e).setParent(this);
       //System.out.println(this.getName()); 
    }
 
-   public void remove(Employee e) {
+   public void remove(EmployeeComponent e) {
       subordinates.remove(e);
    }
 
-   public List<Employee> getSubordinates(){
+   public List<EmployeeComponent> getSubordinates(){
      return subordinates;
    }
 
+   public void setParent(EmployeeComponent p)
+   {
+      parent = p;
+   }
    public String getName()
    {
        return name;
@@ -39,24 +51,24 @@ class Employee {
       {
           return ("Employee :[ Name : " + name + ", dept : " + dept + ", salary :" + salary+" ]");
       }
-      return ("Employee :[Under: "+parent.getName().toString()+", Name : " + name + ", dept : " + dept + ", salary :" + salary+" ]");
+      return ("Employee :[Under: "+((Employee)parent).getName().toString()+", Name : " + name + ", dept : " + dept + ", salary :" + salary+" ]");
    }   
 }
 
 public class Company {
     public static void main(String[] args) {
     
-       Employee BOSS = new Employee("Sajid","Boss", 30000);
+       EmployeeComponent BOSS = new Employee("Sajid","Boss", 30000);
  
-       Employee dev1 = new Employee("Rain","Developer-1", 20000);
+       EmployeeComponent dev1 = new Employee("Rain","Developer-1", 20000);
  
-       Employee manager1 = new Employee("Jabed","Manager-1", 20000);
+       EmployeeComponent manager1 = new Employee("Jabed","Manager-1", 20000);
  
-       Employee dev2 = new Employee("Sachi","Developer-2", 10000);
-       Employee manager2 = new Employee("Nishan","Manager-2", 10000);
+       EmployeeComponent dev2 = new Employee("Sachi","Developer-2", 10000);
+       EmployeeComponent manager2 = new Employee("Nishan","Manager-2", 10000);
  
-       Employee dev3 = new Employee("Shourav","Developer-3", 10000);
-       Employee dev4 = new Employee("Saif","Developer-4", 10000);
+       EmployeeComponent dev3 = new Employee("Shourav","Developer-3", 10000);
+       EmployeeComponent dev4 = new Employee("Saif","Developer-4", 10000);
  
        BOSS.add(dev1);
        BOSS.add(manager1);
@@ -72,13 +84,13 @@ public class Company {
        //print all employees of the organization
        System.out.println(BOSS); 
        System.out.println("---"); 
-       List<Employee> employees= BOSS.getSubordinates();
+       List<EmployeeComponent> employees= BOSS.getSubordinates();
        while (employees.size()!=0)
        {
 
-            Employee employee = employees.remove(0);
+            EmployeeComponent employee = employees.remove(0);
             System.out.println(employee);
-            for (Employee emp : employee.getSubordinates()) {
+            for (EmployeeComponent emp : employee.getSubordinates()) {
                //System.out.println(emp);
                employees.add(emp);
             }
