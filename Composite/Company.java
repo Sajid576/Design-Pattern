@@ -6,6 +6,7 @@ class Employee {
    private String dept;
    private int salary;
    private List<Employee> subordinates;
+   private Employee parent;
 
    // constructor
    public Employee(String name,String dept, int sal) {
@@ -17,6 +18,8 @@ class Employee {
 
    public void add(Employee e) {
       subordinates.add(e);
+      e.parent=this;
+      //System.out.println(this.getName()); 
    }
 
    public void remove(Employee e) {
@@ -27,8 +30,16 @@ class Employee {
      return subordinates;
    }
 
+   public String getName()
+   {
+       return name;
+   }
    public String toString(){
-      return ("Employee :[ Name : " + name + ", dept : " + dept + ", salary :" + salary+" ]");
+      if(parent==null)
+      {
+          return ("Employee :[ Name : " + name + ", dept : " + dept + ", salary :" + salary+" ]");
+      }
+      return ("Employee :[Under: "+parent.getName().toString()+", Name : " + name + ", dept : " + dept + ", salary :" + salary+" ]");
    }   
 }
 
@@ -56,17 +67,22 @@ public class Company {
        manager2.add(dev3);
        manager2.add(dev4);
  
+      
+
        //print all employees of the organization
        System.out.println(BOSS); 
-       
-       for (Employee Employee : BOSS.getSubordinates())
+       System.out.println("---"); 
+       List<Employee> employees= BOSS.getSubordinates();
+       while (employees.size()!=0)
        {
-            System.out.println(Employee);
-          
-            for (Employee employee : Employee.getSubordinates()) 
-            {
-                System.out.println(employee);
+
+            Employee employee = employees.remove(0);
+            System.out.println(employee);
+            for (Employee emp : employee.getSubordinates()) {
+               //System.out.println(emp);
+               employees.add(emp);
             }
+
        }
        
        
