@@ -1,6 +1,8 @@
 # Table of Contents
 
 - [See the blogs](#blogs)
+- [See references](#ref)
+
 
 <a name="blogs"></a>
 ## Blogs
@@ -9,6 +11,7 @@
 
 - https://medium.com/@sajid576/singleton-design-pattern-6201591253e2
 
+<a name="ref"></a>
 ## References
 - https://refactoring.guru/design-patterns
 
