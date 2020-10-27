@@ -7,6 +7,7 @@ interface Members
 }
 class NormalUser implements Members
 {
+    final Boolean admin=false;
     private String name;
     private ArrayList<String>posts=new ArrayList<String>();
 
@@ -25,6 +26,7 @@ class NormalUser implements Members
 }
 class AdminUser implements Members
 {
+    final Boolean admin=true;
     private String name;
     private ArrayList<String>posts=new ArrayList<String>();
 
@@ -58,6 +60,20 @@ class FacebookGroup
     {
         users.add(m);
     }
+    void RemoveUser(Members m)
+    {
+        users.remove(m);
+    }
+    void showUserList()
+    {
+        for(int i=0; i<users.size(); i++)
+        {
+            System.out.println(users.get(i).getName());
+        }
+
+       
+    }
+
 }
 public class facebook_group
 {
@@ -71,9 +87,13 @@ public class facebook_group
         group.addUser(user1);
         group.addUser(user2);
         group.addUser(user3);
+        group.showUserList();
 
-
-
+        System.out.println("After removing shourav");
+        FacebookGroup group1= FacebookGroup.getInstance();
+        group1.RemoveUser(user3);
+        group.showUserList();
+        group1.showUserList();
 
     }
 }
