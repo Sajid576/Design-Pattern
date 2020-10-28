@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 interface EmployeeComponent
 {
    public void add(EmployeeComponent e);
@@ -103,3 +105,10 @@ public class Company {
 
     }
  }
+
+ /**
+  * This code is not following the principle of SRP.
+  As Employee class is taking responsibility of both simple/leaf type objects and Composite/complex
+  type objects.
+   
+  */

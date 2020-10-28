@@ -2,6 +2,9 @@
  * Liskov Substitute Principle: 
  *          Subtypes must be substituble for base types.
  * 
+ * - child class should not break parent class's type definition and behaviour.
+ * - parent should easily replace the child object and not break any functionality
+ * 
  */
 
 class Rectangle

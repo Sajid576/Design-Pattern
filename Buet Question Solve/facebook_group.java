@@ -3,13 +3,14 @@ import java.util.ArrayList;
 interface Members
 {
     public String getName();
-    public void setNewsFeed(String post);
+    public void showNewsFeed(FacebookGroup group);
+    public void setPost(String post,FacebookGroup group);
 }
 class NormalUser implements Members
 {
     final Boolean admin=false;
     private String name;
-    private ArrayList<String>posts=new ArrayList<String>();
+   
 
     NormalUser(String name)
     {
@@ -19,16 +20,20 @@ class NormalUser implements Members
     {
         return name;
     }
-    public void setNewsFeed(String post)
+    public void showNewsFeed(FacebookGroup group)
     {
-        this.posts.add(post);
+        System.out.println(group.getAllPosts()); 
+    }
+    public void setPost(String post,FacebookGroup group)
+    {
+        group.addPost(post);
     }
 }
 class AdminUser implements Members
 {
     final Boolean admin=true;
     private String name;
-    private ArrayList<String>posts=new ArrayList<String>();
+   
 
     AdminUser(String name)
     {
@@ -38,9 +43,13 @@ class AdminUser implements Members
     {
         return name;
     }
-    public void setNewsFeed(String post)
+    public void showNewsFeed(FacebookGroup group)
     {
-        this.posts.add(post);
+        System.out.println(group.getAllPosts()); 
+    }
+    public void setPost(String post,FacebookGroup group)
+    {
+        group.addPost(post);
     }
 }
 
@@ -49,6 +58,7 @@ class FacebookGroup
     private static final FacebookGroup INSTANCE=new FacebookGroup();
     String title="";
     ArrayList<Members>users=new ArrayList<Members>();
+    ArrayList<String> group_posts= new ArrayList<String>();
     String type="open";
 
     private FacebookGroup(){}
@@ -73,6 +83,14 @@ class FacebookGroup
 
        
     }
+    void addPost(String post)
+    {
+        this.group_posts.add(post);
+    }
+    ArrayList<String>  getAllPosts()
+    {
+        return this.group_posts;
+    }
 
 }
 public class facebook_group
@@ -87,13 +105,14 @@ public class facebook_group
         group.addUser(user1);
         group.addUser(user2);
         group.addUser(user3);
-        group.showUserList();
+        //group.showUserList();
 
-        System.out.println("After removing shourav");
-        FacebookGroup group1= FacebookGroup.getInstance();
-        group1.RemoveUser(user3);
-        group.showUserList();
-        group1.showUserList();
-
+        
+        user1.setPost("Hello,I am a nodejs develpoer", group);
+        user2.showNewsFeed(group);
+        user3.showNewsFeed(group);
+        user1.setPost("Hello,I am developing game", group);
+        user3.setPost("Hello,I am a php develpoer", group);
+        user3.showNewsFeed(group);
     }
 }
